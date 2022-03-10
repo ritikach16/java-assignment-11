@@ -7,26 +7,25 @@ import java.util.Scanner;
 public class Task {
     public static void main(String[] args) throws FileNotFoundException {
         Map<Character, Integer> map = new HashMap<>();
-        Scanner file = new Scanner(new File("input.txt"));
+        String root = System.getProperty("user.home");
+        File f1 = new File(root+ "/" + args[0]);
+        FileReader file = new FileReader(f1);
        fileData(file, map);
     }
 
-    public static void fileData(Scanner file, Map<Character, Integer> map) throws FileNotFoundException{
+    public static void fileData(FileReader file, Map<Character, Integer> map) throws FileNotFoundException{
         try{
-            while(file.hasNext()){
-                String str = file.nextLine();
-                for(int i = 0; i<str.length(); i++){
-                    map.put(str.charAt(i), map.getOrDefault(str.charAt(i), 0)+1);
-                }
+            int r = 0;
+            while((r = file.read())!=0){
+                char ch = (char)r;
+                    map.put(ch, map.getOrDefault(ch, 0)+1);
+
             }
 
-            int count = 0;
-            for(Character ch : map.keySet()){
-                count++;
-            }
-            System.out.println(count);
             FileWriter outFile = new FileWriter ("output.txt");
-            outFile.write(count+"");
+            for(Map.Entry m : map.entrySet()){
+                outFile.write(m.getKey()+" = "+m.getValue() + "\n");
+            }
             file.close();
             outFile.close();
         }
